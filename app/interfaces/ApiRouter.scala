@@ -1,7 +1,7 @@
-package routers
+package interfaces
 
 import akka.actor.ActorSystem
-import endpoints.Endpoints
+import interfaces.endpoints.Endpoints
 import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
 

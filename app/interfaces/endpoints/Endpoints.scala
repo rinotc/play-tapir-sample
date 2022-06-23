@@ -1,7 +1,7 @@
-package endpoints
+package interfaces.endpoints
 
 import akka.stream.Materializer
-import endpoints.Library._
+import Library._
 import io.circe.generic.auto._
 import play.api.routing.Router.Routes
 import sttp.tapir._

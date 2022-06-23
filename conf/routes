@@ -3,4 +3,5 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-->     /api                         routers.ApiRouter
+->     /api                         interfaces.ApiRouter
+->     /api/books                   interfaces.endpoints.books.ApiBooksRouter
