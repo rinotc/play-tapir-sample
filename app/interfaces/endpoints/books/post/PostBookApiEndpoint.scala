@@ -2,7 +2,9 @@ package interfaces.endpoints.books.post
 
 import domain.book.ISBN
 import domain.money.Yen
+import interfaces.EndpointSyntaxOps
 import interfaces.endpoints.ErrorResponse
+import interfaces.endpoints.books.BookResponse
 import io.circe.generic.auto._
 import sttp.tapir.generic.auto._
 import sttp.tapir.json.circe.jsonBody
@@ -13,11 +15,7 @@ import usecase.books.add.{AddBookInput, AddBookOutput, AddBookUseCase}
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class PostBookApiEndpoint @Inject() (addBookUseCase: AddBookUseCase) {
-
-  implicit class FutureOps[T](value: T) {
-    def future: Future[T] = Future.successful(value)
-  }
+class PostBookApiEndpoint @Inject() (addBookUseCase: AddBookUseCase) extends EndpointSyntaxOps {
 
   private case class PostBookRequest(
       isbn: String,
@@ -25,17 +23,10 @@ class PostBookApiEndpoint @Inject() (addBookUseCase: AddBookUseCase) {
       price: Int
   )
 
-  private case class PostBookResponse(
-      id: Int,
-      isbn: String,
-      title: String,
-      price: Int
-  )
-
-  private val postBookApiEndpoint: PublicEndpoint[PostBookRequest, ErrorResponse, PostBookResponse, Any] = endpoint.post
+  private val postBookApiEndpoint: PublicEndpoint[PostBookRequest, ErrorResponse, BookResponse, Any] = endpoint.post
     .in(jsonBody[PostBookRequest])
     .errorOut(jsonBody[ErrorResponse])
-    .out(jsonBody[PostBookResponse])
+    .out(jsonBody[BookResponse])
 
   val postBookApiServerEndpoint: ServerEndpoint[Any, Future] = postBookApiEndpoint.serverLogic { request =>
     val input = AddBookInput(
@@ -53,7 +44,7 @@ class PostBookApiEndpoint @Inject() (addBookUseCase: AddBookUseCase) {
           )
         ).future
       case AddBookOutput.Success(newBook) =>
-        val response = PostBookResponse(
+        val response = BookResponse(
           newBook.id.value,
           newBook.isbn.value,
           newBook.title,

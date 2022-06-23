@@ -8,6 +8,8 @@ object MemoryBookRepository extends BookRepository {
 
   private val books: mutable.ArrayBuffer[Book] = mutable.ArrayBuffer.empty
 
+  override def list(): Seq[Book] = books.toSeq
+
   override def findById(id: BookId): Option[Book] = books.find(_.id == id)
 
   override def findByISBN(isbn: ISBN): Option[Book] = books.find(_.isbn == isbn)
