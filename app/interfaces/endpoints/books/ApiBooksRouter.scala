@@ -1,6 +1,7 @@
 package interfaces.endpoints.books
 
 import akka.stream.Materializer
+import interfaces.endpoints.books.delete.DeleteBookEndpoint
 import interfaces.endpoints.books.list.ListBooksApiEndpoint
 import interfaces.endpoints.books.post.PostBookApiEndpoint
 import interfaces.endpoints.books.put.PutBookApiEndpoint
@@ -13,7 +14,8 @@ import javax.inject.Inject
 class ApiBooksRouter @Inject() (
     listBooksApiEndpoint: ListBooksApiEndpoint,
     postBookApiEndpoint: PostBookApiEndpoint,
-    putBookApiEndpoint: PutBookApiEndpoint
+    putBookApiEndpoint: PutBookApiEndpoint,
+    deleteBookEndpoint: DeleteBookEndpoint
 )(implicit mat: Materializer)
     extends SimpleRouter {
 
@@ -21,7 +23,8 @@ class ApiBooksRouter @Inject() (
     List(
       postBookApiEndpoint.postBookApiServerEndpoint,
       putBookApiEndpoint.putBookApiServerEndpoint,
-      listBooksApiEndpoint.listBooksApiServerEndpoint
+      listBooksApiEndpoint.listBooksApiServerEndpoint,
+      deleteBookEndpoint.deleteBookApiServerEndpoint
     )
   )
 }
