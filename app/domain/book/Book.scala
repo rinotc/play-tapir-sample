@@ -9,6 +9,20 @@ final class Book(
     val price: Yen
 ) {
 
+  def updateTitle(newTitle: String) = new Book(
+    this.id,
+    this.isbn,
+    newTitle,
+    this.price
+  )
+
+  def updatePrice(price: Yen) = new Book(
+    this.id,
+    this.isbn,
+    this.title,
+    price
+  )
+
   override def equals(other: Any): Boolean = other match {
     case that: Book => id == that.id
     case _          => false

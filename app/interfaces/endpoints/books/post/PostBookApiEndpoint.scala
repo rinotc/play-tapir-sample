@@ -37,20 +37,12 @@ class PostBookApiEndpoint @Inject() (addBookUseCase: AddBookUseCase) extends End
 
     addBookUseCase.handle(input) match {
       case AddBookOutput.ConflictISBN(isbn) =>
-        Left(
-          ErrorResponse(
-            code = "books.add.conflictISBN",
-            description = s"${isbn.value} is already exists."
-          )
-        ).future
+        ErrorResponse(
+          code = "books.add.conflictISBN",
+          description = s"${isbn.value} is already exists."
+        ).left.future
       case AddBookOutput.Success(newBook) =>
-        val response = BookResponse(
-          newBook.id.value,
-          newBook.isbn.value,
-          newBook.title,
-          newBook.price.value
-        )
-        Right(response).future
+        BookResponse.from(newBook).right.future
     }
   }
 }
